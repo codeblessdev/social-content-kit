@@ -9,7 +9,7 @@ o algo que se reconozca ("¿seguís usando esto?"). Ritmo rápido: escenas de 2 
 **Meme**: formato reconocible (antes/después, "nadie:", expectativa vs. realidad). Poco texto. Que el chiste sea del rubro
 del cliente, no del software. La marca aparece al final y chiquita.
 
-**Tutorial de un módulo**: título con el resultado ("Cómo transferir stock entre locales en 30 s"), un paso por escena,
+**Tutorial de un módulo**: título con el resultado ("Cómo exportar tus reportes en 30 s"), un paso por escena,
 pantalla real o reconstruida con el foco en lo que se toca (zoom, resaltado), locución en segunda persona. En carrusel:
 un paso por slide y la última con el resumen.
 

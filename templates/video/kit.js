@@ -39,7 +39,7 @@
     title(selector, text) {
       document.querySelectorAll(selector).forEach((el) => (el.innerHTML = words(text)));
     },
-    // 840000 -> 840.000 sin depender del locale del navegador
+    // 1250000 -> 1.250.000 sin depender del locale del navegador
     thousands: (n, sep = '.') => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, sep),
     at: (id) => Number(scene(id)?.dataset.start ?? 0),
     dur: (id) => Number(scene(id)?.dataset.duration ?? 0),

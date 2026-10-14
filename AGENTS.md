@@ -9,4 +9,5 @@ Cuando la persona pida contenido para redes (posts, reels, carruseles, videos, t
 Si estás modificando el kit en sí:
 - `bin/sck.mjs` es el CLI; la lógica está en `src/`. Templates en `templates/still/` (imágenes) y `templates/video/` (HyperFrames).
 - Nada en este repo puede depender de una app o una marca en particular: las marcas, proyectos y resultados viven en el workspace de cada persona.
+- **Nunca commitees contenido generado ni datos de una app** (brand.json, capturas, fotos, planes, voz, videos, nombres de clientes o tiendas). En ejemplos y tests usá apps ficticias.
 - Probá los cambios con `npm test` y con un render real (`sck render <proyecto> --draft`).

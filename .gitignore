@@ -1,4 +1,19 @@
 node_modules/
-/social-content/
 .hyperframes/
 *.log
+
+# Contenido generado: NUNCA va al repo. Marcas, capturas, proyectos y videos viven en el workspace de cada persona.
+/social-content/
+brands/
+projects/
+.sources/
+out/
+renders/
+*.mp4
+*.mov
+*.webm
+*.wav
+*.mp3
+plan.json
+brand.json
+scan.json

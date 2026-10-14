@@ -12,11 +12,11 @@ test('chunk corta en la puntuación y respeta el máximo de palabras', () => {
 });
 
 test('captionTimes reparte toda la duración sin huecos', () => {
-  const caps = captionTimes('Stock, ventas y ganancias en un solo panel.', 2, 3);
+  const caps = captionTimes('Turnos, clientes y pagos en un solo lugar.', 2, 3);
   assert.equal(caps[0].start, 2);
   assert.ok(Math.abs(caps.at(-1).end - 5) < 0.01);
   for (let i = 1; i < caps.length; i++) assert.equal(caps[i].start, caps[i - 1].end);
-  assert.equal(caps[0].text, 'Stock'); // sin la coma final
+  assert.equal(caps[0].text, 'Turnos'); // sin la coma final
 });
 
 test('sizeFor usa la plataforma y permite pisar el tamaño', () => {

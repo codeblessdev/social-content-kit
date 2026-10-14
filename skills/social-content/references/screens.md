@@ -2,7 +2,7 @@
 
 ## Si la persona tiene capturas
 
-- Pedí capturas puntuales: "la pantalla de stock con varios productos", "el gráfico de ganancias del mes". Mejor en
+- Pedí capturas puntuales: "el listado principal con varios registros cargados", "el gráfico del mes". Mejor en
   alta resolución y sin datos reales de clientes.
 - Guardalas en `brands/<id>/assets/screens/<nombre>.png`. En el video quedan en `assets/brand/screens/` (`sck video sync`).
 - Si muestran datos personales o nombres de clientes, tapalos (un bloque con `backdrop-filter: blur()` sobre esa zona en la escena,

@@ -2,19 +2,19 @@
 
 ```jsonc
 {
-  "brand": "stock",                 // id en brands/
+  "brand": "mi-app",                // id en brands/
   "platform": "instagram",          // ver platforms.md
   "goal": "marketing",              // marketing | vistas | meme | tutorial | otro
-  "title": "Presentación con ragebait",
+  "title": "Lanzamiento de turnos online",
   "status": "draft",                // "approved" cuando la persona aprueba
   "pieces": [
     {
       "id": "post-problema",        // [a-z0-9-]
       "type": "image",              // image | carousel | video
       "format": "post",
-      "slide": { "layout": "photo", "kicker": "El problema", "title": "Sin un panel, *el número se pierde.*", "photo": "photos/planilla.jpg" },
+      "slide": { "layout": "photo", "kicker": "El problema", "title": "Los turnos por WhatsApp *se pierden.*", "photo": "photos/agenda.jpg" },
       "caption": "…",
-      "hashtags": ["gestiondestock"]
+      "hashtags": ["turnosonline"]
     },
     {
       "id": "carrusel-pasos",
@@ -29,7 +29,7 @@
       "voice": { "engine": "kokoro", "voice": "em_alex", "speed": 1.0 },   // o null sin voz
       "captions": true,
       "scenes": [
-        { "id": "hook", "visual": "Captura del sistema viejo con zoom lento", "onscreen": "¿Seguís usando esto?", "voice": "¿Seguís controlando el stock con esto?", "min": 3 },
+        { "id": "hook", "visual": "Captura de un chat lleno de pedidos de turno", "onscreen": "¿Seguís dando turnos así?", "voice": "¿Seguís dando turnos por chat?", "min": 3 },
         { "id": "cta", "visual": "Fondo oscuro, logo y CTA", "onscreen": "14 días gratis", "voice": "Probalo gratis.", "min": 3 }
       ],
       "caption": "…",
