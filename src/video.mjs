@@ -1,7 +1,7 @@
 // Videos: proyecto HyperFrames por pieza en <workspace>/projects/<proyecto>/<pieza>/.
 
 import { spawnSync } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { SAFE, sizeFor } from './formats.mjs';
 import { KIT, brandDir, has } from './paths.mjs';
@@ -45,7 +45,7 @@ export function check(dir) {
 export function snapshot(dir, at, outDir) {
   const r = spawnSync('npx', ['hyperframes', 'snapshot', dir, '--at', at.join(','), '--no-end', '-o', outDir], { cwd: KIT, env: hfEnv(), stdio: 'inherit' });
   if (r.status !== 0) throw new Error('Falló el snapshot');
-  return join(outDir, 'contact-sheet.jpg');
+  return readdirSync(outDir).filter((f) => /^contact-sheet.*\.jpg$/.test(f)).map((f) => join(outDir, f)).join('\n');
 }
 
 export function render({ dir, output, draft, docker }) {
