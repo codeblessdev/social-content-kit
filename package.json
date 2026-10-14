@@ -1,7 +1,7 @@
 {
   "name": "social-content-kit",
   "version": "0.1.0",
-  "description": "Kit para que cualquier agente de IA genere imágenes, carruseles y videos para redes con la línea visual de una app.",
+  "description": "Turn any app's codebase into on-brand social content (images, carousels, videos with AI voice-over) using your AI coding agent.",
   "type": "module",
   "private": true,
   "bin": {
@@ -16,5 +16,17 @@
   "dependencies": {
     "hyperframes": "0.8.155",
     "puppeteer-core": "^24.0.0"
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codeblessdev/social-content-kit.git"
+  },
+  "keywords": [
+    "agent-skills",
+    "social-media",
+    "video",
+    "hyperframes",
+    "tts"
+  ]
 }

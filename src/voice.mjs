@@ -17,7 +17,7 @@ const venvPython = () => join(VENV, process.platform === 'win32' ? 'Scripts/pyth
 const PRE = 0.15; // silencio antes de la voz dentro de la escena
 const POST = 0.4; // respiro después
 
-// Voces de Kokoro en español: ef_dora (mujer), em_alex y em_santa (hombre).
+// Cualquier voz de Kokoro (npx hyperframes tts --list). En español: ef_dora, em_alex, em_santa.
 export const DEFAULT_VOICE = { engine: 'kokoro', voice: 'ef_dora', speed: 1.0 };
 
 export function setupVoice() {
