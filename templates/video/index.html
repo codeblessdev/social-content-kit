@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width={{W}}, height={{H}}" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <!-- assets/brand/ y assets/sck.css los genera "sck video new" (y "sck video sync"). No editar a mano. -->
+    <link rel="stylesheet" href="assets/brand/fonts.css" />
+    <link rel="stylesheet" href="assets/brand/brand.css" />
+    <link rel="stylesheet" href="assets/sck.css" />
+    <link rel="stylesheet" href="kit.css" />
+    <script src="kit.js"></script>
+    <!-- Subtítulos generados por "sck voice" (si no hay voz, queda vacío). -->
+    <script src="assets/voice/captions.js"></script>
+    <style>
+      /* Estilos propios de este video. */
+      [data-scene="hook"] { justify-content: flex-end; gap: 40px; }
+      [data-scene="hook"] .display { font-size: 136px; }
+      [data-scene="cta"] { justify-content: flex-end; gap: 56px; }
+      [data-scene="cta"] .display { font-size: 136px; }
+    </style>
+  </head>
+  <body>
+    <!-- data-start / data-duration de cada [data-scene] y del root los escribe "sck timing" a partir del plan y la voz. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="6" data-width="{{W}}" data-height="{{H}}">
+
+      <section class="scene clip" data-scene="hook" data-start="0" data-duration="3" data-track-index="0">
+        <p class="kicker">Kicker</p>
+        <h1 class="display" id="hook-title"></h1>
+      </section>
+
+      <section class="scene ink clip" data-scene="cta" data-start="3" data-duration="3" data-track-index="1">
+        <h2 class="display" id="cta-title"></h2>
+        <span class="pill">Llamado a la acción →</span>
+      </section>
+
+      <!-- sck:voice -->
+      <!-- /sck:voice -->
+
+      <div id="captions"></div>
+    </div>
+    <script>
+      SCK.title("#hook-title", "Titular del *gancho.*");
+      SCK.title("#cta-title", "Cierre con *remate.*");
+
+      const tl = gsap.timeline({ paused: true });
+      const ease = "power3.out";
+
+      tl.fromTo('[data-scene="hook"] .w', { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.7, ease, stagger: 0.08 }, SCK.at("hook") + 0.2);
+      tl.fromTo('[data-scene="cta"] .w', { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.7, ease, stagger: 0.08 }, SCK.at("cta") + 0.15);
+
+      SCK.fades(tl);
+      SCK.captions(tl);
+      // Registro obligatorio de HyperFrames (el linter lo busca escrito así).
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

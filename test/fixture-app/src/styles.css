@@ -1,0 +1,3 @@
+:root { --brand: #e4572e; --paper: #fbf7f0; }
+body { font-family: "Inter", sans-serif; background: #fbf7f0; color: #1a1a1a; }
+.btn { background: #e4572e; color: #fbf7f0; } .btn:hover { background: #e4572e; } h1 { color: #1a1a1a; }

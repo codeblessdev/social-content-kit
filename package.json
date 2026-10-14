@@ -1,0 +1,20 @@
+{
+  "name": "social-content-kit",
+  "version": "0.1.0",
+  "description": "Kit para que cualquier agente de IA genere imágenes, carruseles y videos para redes con la línea visual de una app.",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "sck": "bin/sck.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "hyperframes": "0.8.155",
+    "puppeteer-core": "^24.0.0"
+  }
+}
