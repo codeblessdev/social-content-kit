@@ -1,8 +1,8 @@
-// sck brand init <repo|carpeta> --id <id>
-// Escanea el código de una app y deja un borrador de marca en <workspace>/brands/<id>/:
-//   brand.json   tokens, fuentes, voz y hechos (borrador: el agente lo completa y la persona lo confirma)
-//   scan.json    todo lo encontrado, para que el agente decida
-//   assets/      logos e imágenes copiados del repo, fonts/ descargadas de Google Fonts
+// sck brand init <repo|folder> --id <id>
+// Scans an app's code and leaves a brand draft in <workspace>/brands/<id>/:
+//   brand.json   tokens, fonts, voice and facts (a draft: the agent completes it and a person confirms it)
+//   scan.json    everything found, for the agent to decide
+//   assets/      logos and images copied from the repo; fonts/ downloaded from Google Fonts
 
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { basename, extname, join, relative } from 'node:path';
@@ -53,7 +53,7 @@ function colorInfo(counts) {
     .sort((a, b) => b.count - a.count);
 }
 
-// Primer borrador de tokens: el fondo claro más usado, la tinta oscura más usada y el color con más saturación.
+// First token draft: the most used light background, the most used dark ink and the most saturated color.
 function guessTokens(colors) {
   const pick = (f, fallback) => colors.find(f)?.hex || fallback;
   const bg = pick((c) => c.lum > 0.9, '#ffffff');
@@ -76,7 +76,7 @@ function guessTokens(colors) {
   };
 }
 
-// ---------- escaneo ----------
+// ---------- scan ----------
 
 export function scan(dir) {
   const files = walk(dir);
@@ -137,7 +137,7 @@ export function scan(dir) {
 
 // ---------- Google Fonts ----------
 
-// Descarga los woff2 (latin y latin-ext) de las URLs de Google Fonts y arma fonts.css local.
+// Downloads the woff2 files (latin and latin-ext) from Google Fonts URLs and writes a local fonts.css.
 export async function downloadFonts(urls, outDir) {
   const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36';
   mkdirSync(join(outDir, 'fonts'), { recursive: true });
@@ -165,20 +165,20 @@ export async function downloadFonts(urls, outDir) {
   return faces.length;
 }
 
-// ---------- comando ----------
+// ---------- command ----------
 
 export async function init(input, ws, opts = {}) {
   const source = resolveSource(input, ws);
   const id = opts.id || slug(basename(source.dir));
   const out = brandDir(ws, id);
   const brandFile = join(out, 'brand.json');
-  if (existsSync(brandFile) && !opts.force) throw new Error(`Ya existe ${brandFile}. Usá --force para regenerar el borrador.`);
+  if (existsSync(brandFile) && !opts.force) throw new Error(`${brandFile} already exists. Use --force to regenerate the draft.`);
 
   const s = scan(source.dir);
   mkdirSync(join(out, 'assets', 'logos'), { recursive: true });
   mkdirSync(join(out, 'assets', 'photos'), { recursive: true });
   mkdirSync(join(out, 'assets', 'screens'), { recursive: true });
-  // Nombres únicos: dos "hero.png" de carpetas distintas no se pisan.
+  // Unique names: two "hero.png" files from different folders don't overwrite each other.
   const used = new Set();
   const copy = (item, sub) => {
     let name = basename(item.path);
@@ -195,7 +195,7 @@ export async function init(input, ws, opts = {}) {
     try {
       fontFaces = await downloadFonts(s.google_fonts, out);
     } catch (e) {
-      console.warn(`No pude bajar las fuentes de Google (${e.message}). Se puede reintentar con: sck brand fonts ${id}`);
+      console.warn(`Could not download Google Fonts (${e.message}). Retry with: sck brand fonts ${id}`);
     }
   }
 

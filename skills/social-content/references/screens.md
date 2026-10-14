@@ -1,21 +1,26 @@
-# Pantallas de la app
+# App screens
 
-## Si la persona tiene capturas
+## If the person has screenshots
 
-- Pedí capturas puntuales: "el listado principal con varios registros cargados", "el gráfico del mes". Mejor en
-  alta resolución y sin datos reales de clientes.
-- Guardalas en `brands/<id>/assets/screens/<nombre>.png`. En el video quedan en `assets/brand/screens/` (`sck video sync`).
-- Si muestran datos personales o nombres de clientes, tapalos (un bloque con `backdrop-filter: blur()` sobre esa zona en la escena,
-  o recortando la imagen).
+- Ask for specific screenshots: "the main list with several records", "this month's chart". High resolution is best,
+  without real customer data.
+- Save them in `brands/<id>/assets/screens/<name>.png`. In videos they end up in `assets/brand/screens/` (`sck video sync`).
+- If they show personal data or customer names, cover them (a block with `backdrop-filter: blur()` over that area in the scene,
+  or crop the image).
+- Real screenshots are never translated, whatever the content language. If that clashes with the video's language, say so in the plan.
+- Check what they actually show before using them: duplicated files, empty states, odd values (e.g. ∞ stock) or a screen that isn't
+  the one requested. Tell the person and propose a fix (a new screenshot, a tighter crop, or rebuilding that screen).
 
-## Si no tiene: reconstruir desde el código
+## If they don't: rebuild them from the code
 
-1. Encontrá el componente de esa pantalla (`features/`, `pages/`, `views/`, `routes/`…) y leé su template y sus estilos.
-2. Recreá en HTML **solo lo que se ve en el video** (encabezado, tabla, tarjetas, gráfico), dentro de la escena, con
-   los tokens de la marca o los colores propios del panel si son distintos. No hace falta que sea funcional.
-3. Datos de ejemplo verosímiles: `demo_numbers` y nombres de producto genéricos ("Remera básica", "Yerba 1 kg"). Nunca datos reales.
-4. En el plan, aclaralo: "pantalla reconstruida desde el código".
-5. Mirala con `sck snapshot` y comparala con el componente original. Si algo no se parece, ajustalo antes de seguir.
+1. Find the component for that screen (`features/`, `pages/`, `views/`, `routes/`…) and read its template and styles.
+2. Recreate in HTML **only what the video shows** (header, table, cards, chart, form) inside the scene, using the app's own
+   colors and fonts for that screen. It doesn't need to work.
+3. **Language**: use the plan's `ui_language`. If it's the app's original language, copy the labels from the template verbatim;
+   if it's the content language, translate menus, buttons, labels and sample data consistently. Ask the person if `ui_language` is missing.
+4. Believable sample data: `demo_numbers` and generic product names. Never real data. Passwords only as dots.
+5. Say so in the plan: "screen rebuilt from code" (and in which language).
+6. Look at it with `sck snapshot` and compare it with the original component. Fix anything that doesn't match before moving on.
 
-Alternativa: si la app corre localmente y la persona la levanta, sacá capturas con Chrome headless (puppeteer)
-sobre la URL local con datos de prueba.
+Rebuilt screens can be animated (typing into a form, a counter going up, rows sliding in), which screenshots can't.
+Alternative: if the app runs locally and the person starts it, take screenshots with headless Chrome (puppeteer) against the local URL with test data.

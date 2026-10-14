@@ -1,42 +1,43 @@
 # brand.json
 
-`sck brand init` deja un borrador (`"status": "draft"`) y un `scan.json` con lo que encontró en el código. Tu trabajo es curarlo.
+`sck brand init` writes a draft (`"status": "draft"`) and a `scan.json` with everything it found in the code. Your job is to curate it.
 
 ## Tokens
 
-Las piezas usan solo estos tokens; todos tienen que existir:
+Pieces only use these tokens; all of them must exist:
 
-| token | qué es |
+| token | what it is |
 |---|---|
-| `bg` | fondo general (claro u oscuro, el de la landing) |
-| `surface` | tarjetas sobre el fondo |
-| `ink` | texto principal y fondo de las escenas oscuras |
-| `ink-soft` | texto secundario |
-| `muted` | kicker, notas, pie |
-| `line` | bordes suaves (`rgba`) |
-| `on-ink` | texto sobre `ink` |
-| `accent` | color de marca para destacar (números de paso, barra destacada) |
-| `positive` | verde o segundo color (variaciones positivas) |
-| `font-display` | titulares, con fallback (`'Instrument Serif', Georgia, serif`) |
-| `font-body` | texto, con fallback |
-| `radius` | radio de tarjetas (`28px`) |
+| `bg` | page background (light or dark, the landing page's) |
+| `surface` | cards on top of the background |
+| `ink` | main text and the background of dark scenes |
+| `ink-soft` | secondary text |
+| `muted` | kickers, notes, footer |
+| `line` | subtle borders (`rgba`) |
+| `on-ink` | text on `ink` |
+| `accent` | brand highlight color (step numbers, highlighted bar) |
+| `positive` | green or second color (positive deltas) |
+| `font-display` | headings, with fallback (`'Instrument Serif', Georgia, serif`) |
+| `font-body` | body text, with fallback |
+| `radius` | card corner radius (`28px`) |
 
-**Tomá los colores de la cara pública de la app** (landing, home, login), no del panel interno: la app suele tener azules
-o grises de framework que no son la marca. `scan.json` → `colors` ordena por frecuencia y trae `css_vars`; abrí los
-archivos de `landing_candidates` y sus estilos para confirmar. Verificá contraste: `ink` sobre `bg` y `on-ink` sobre `ink`.
+**Take the colors from the app's public face** (landing, home, login), not its internal dashboard: dashboards often use framework
+blues and grays that aren't the brand. `scan.json` → `colors` is sorted by frequency and includes `css_vars`; open the
+`landing_candidates` files and their styles to confirm. Check contrast: `ink` on `bg` and `on-ink` on `ink`.
 
-Fuentes: `sck brand init` baja las de Google Fonts que encuentre y arma `fonts.css`. Si la marca usa una fuente local
-(`.woff2` en el repo), copiala a `brands/<id>/fonts/` y agregá el `@font-face` a `fonts.css`.
+Fonts: `sck brand init` downloads the Google Fonts it finds and writes `fonts.css`. If the brand uses a local font
+(a `.woff2` in the repo), copy it to `brands/<id>/fonts/` and add its `@font-face` to `fonts.css`.
 
-## Voz y hechos
+## Voice and facts
 
-- `voice.language`: idioma y registro (por ejemplo "es-AR con voseo").
-- `voice.rules`: 3 a 6 reglas observadas en el copy real (largo de frases, signos, emojis, a quién le habla).
-- `voice.examples`: 3 a 5 frases textuales de la landing.
+- `voice.language`: language and register as used by the app (e.g. "Spanish (Argentina), informal voseo" or "en-US, friendly").
+  This is the brand's own language; each project chooses its content language separately.
+- `voice.rules`: 3 to 6 rules observed in the real copy (sentence length, punctuation, emojis, who it talks to).
+- `voice.examples`: 3 to 5 sentences taken verbatim from the landing page.
 - `facts`: `pitch`, `problem`, `steps`, `features` ({title, text, photo}), `plans` ({name, price, note, featured, extra}),
-  `trial`, `cta`. **Solo lo que esté en el código, el README o lo que diga la persona.**
-- `photos`: describí cada foto en una línea (qué muestra, vertical u horizontal) para elegirla sin abrirla.
-- `demo_numbers`: los números de ejemplo de la landing, si hay.
-- `handle`: la cuenta donde se publica. Preguntala si no la sabés.
+  `trial`, `cta`. **Only what's in the code, the README or what the person tells you.**
+- `photos`: describe each photo in one line (what it shows, portrait or landscape) so you can pick it without opening it.
+- `demo_numbers`: the landing page's sample numbers, if any.
+- `handle`: the account where content is published. Ask if you don't know it.
 
-Antes de confirmar, mostrale a la persona: paleta (hex), fuentes, 3 ejemplos de voz y la lista de hechos.
+Before confirming, show the person: palette (hex), fonts, 3 voice examples and the list of facts.

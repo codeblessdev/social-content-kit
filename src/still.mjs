@@ -1,9 +1,10 @@
-// Render de imágenes y carruseles con Chrome headless.
+// Renders images and carousels with headless Chrome.
 
 import { existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import puppeteer from 'puppeteer-core';
 import { sizeFor } from './formats.mjs';
+import { lang } from './i18n.mjs';
 import { brandDir } from './paths.mjs';
 
 export function chromePath() {
@@ -14,14 +15,14 @@ export function chromePath() {
     'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   ];
   const found = candidates.find((p) => p && existsSync(p));
-  if (!found) throw new Error('No encuentro Chrome. Instalalo o definí CHROME_PATH.');
+  if (!found) throw new Error('Chrome not found. Install it or set CHROME_PATH.');
   return found;
 }
 
 export const launch = () =>
   puppeteer.launch({ executablePath: chromePath(), headless: true, args: ['--no-sandbox', '--font-render-hinting=none'] });
 
-// Las rutas de imagen de una slide se buscan primero en el proyecto y después en los assets de la marca.
+// A slide's image paths are looked up in the project first, then in the brand's assets.
 function assetUrl(ws, project, brand, p) {
   if (!p || /^(https?:|data:)/.test(p)) return p;
   const inProject = join(project.dir, p);
@@ -34,6 +35,7 @@ export async function renderStills({ browser, base, ws, project, plan, brand, pi
   const size = sizeFor(plan.platform, piece);
   const bDir = brandDir(ws, brand.id);
   const fontsCss = brand.fonts?.css ? `${base}/ws/${relative(ws, join(bDir, brand.fonts.css))}` : null;
+  const l = lang(plan.language);
   const files = [];
   const warnings = [];
 
@@ -43,7 +45,7 @@ export async function renderStills({ browser, base, ws, project, plan, brand, pi
     const page = await browser.newPage();
     await page.setViewport({ width: size[0], height: size[1], deviceScaleFactor: 1 });
     await page.evaluateOnNewDocument((d) => { window.__STILL__ = d; }, {
-      brand: brandForPage, slide, index, total: slides.length, size, fontsCss, assetBase: `/ws/${relative(ws, join(bDir, 'assets'))}`,
+      brand: brandForPage, slide, index, total: slides.length, size, fontsCss, lang: l.code, ui: l.ui, assetBase: `/ws/${relative(ws, join(bDir, 'assets'))}`,
     });
     const errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
@@ -58,7 +60,7 @@ export async function renderStills({ browser, base, ws, project, plan, brand, pi
       const f = document.getElementById('frame');
       return f.scrollHeight > f.clientHeight + 1 || f.scrollWidth > f.clientWidth + 1;
     });
-    if (overflow) warnings.push(`${piece.id} slide ${index + 1}: el contenido no entra en el cuadro; acortá el texto.`);
+    if (overflow) warnings.push(`${piece.id} slide ${index + 1}: content doesn't fit the frame; shorten the text.`);
 
     const file = slides.length > 1 ? `slide-${index + 1}.png` : `${piece.id}.png`;
     await page.screenshot({ path: join(outDir, file), type: 'png' });

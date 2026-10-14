@@ -1,5 +1,5 @@
-/* Base compartida de los videos. Los tokens (--bg, --ink, --accent, --font-display…) vienen de assets/brand/brand.css.
-   --safe-top / --safe-bottom los escribe "sck video new" según la plataforma. */
+/* Shared base for videos. Tokens (--bg, --ink, --accent, --font-display…) come from assets/brand/brand.css.
+   --safe-top / --safe-bottom are written by "sck video new" for each platform. */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--bg); }
@@ -17,7 +17,8 @@ html, body { width: var(--w); height: var(--h); overflow: hidden; background: va
 .scene {
   position: absolute;
   inset: 0;
-  padding: calc(var(--safe-top) + 40px) 96px calc(var(--safe-bottom) + 40px);
+  /* Bottom padding keeps content clear of the captions; set --captions-space: 40px on videos without captions. */
+  padding: calc(var(--safe-top) + 40px) 96px calc(var(--safe-bottom) + var(--captions-space, 200px));
   display: flex;
   flex-direction: column;
   background:
@@ -67,7 +68,7 @@ html, body { width: var(--w); height: var(--h); overflow: hidden; background: va
 .brandline .mark img { width: 100%; height: 100%; object-fit: contain; }
 .brandline small { margin-left: auto; font-size: 32px; font-weight: 500; opacity: 0.62; }
 
-/* Captura de pantalla (de la persona o reconstruida desde el código). */
+/* App screenshot (provided by the user or rebuilt from code). */
 .screen {
   border-radius: 28px;
   overflow: hidden;
@@ -77,7 +78,7 @@ html, body { width: var(--w); height: var(--h); overflow: hidden; background: va
 }
 .screen img { display: block; width: 100%; height: auto; }
 
-/* Subtítulos: frases cortas, encima de la zona segura inferior. */
+/* Captions: short phrases, above the bottom safe area. */
 #captions {
   position: absolute;
   left: 72px;

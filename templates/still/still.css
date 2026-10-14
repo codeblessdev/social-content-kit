@@ -1,4 +1,4 @@
-/* Piezas fijas (post / carrusel / story). Los tokens llegan como --variables desde brand.json. */
+/* Static pieces (post / carousel / story). Tokens arrive as CSS variables from brand.json. */
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
@@ -33,7 +33,7 @@ body {
     var(--ink);
 }
 
-/* ---------- tipografía ---------- */
+/* ---------- typography ---------- */
 
 .kicker {
   margin: 0;
@@ -72,7 +72,7 @@ body {
 .grow { flex: 1; min-height: 0; }
 .push { margin-top: auto; }
 
-/* ---------- pie de marca ---------- */
+/* ---------- brand footer ---------- */
 
 .foot {
   display: flex;
@@ -101,7 +101,7 @@ body {
 .swipe { display: inline-flex; align-items: center; gap: 14px; font-weight: 600; color: var(--ink); }
 .swipe::after { content: "→"; font-size: 34px; }
 
-/* ---------- tarjetas ---------- */
+/* ---------- cards ---------- */
 
 .card {
   background: color-mix(in srgb, var(--surface) 92%, transparent);
@@ -123,12 +123,12 @@ body {
 .l-photo .photo { flex: 1; min-height: 0; margin-top: 48px; }
 .l-photo .caption { margin-top: 22px; font-size: 24px; color: var(--muted); }
 
-/* layout: split (foto a un costado) */
+/* layout: split (photo on one side) */
 .l-split .row { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; flex: 1; min-height: 0; margin-top: 56px; }
 .l-split .photo { height: 100%; }
 .l-split .row .stack { justify-content: flex-end; }
 
-/* layout: stat (widget como en la landing) */
+/* layout: stat (dashboard-style widget) */
 .widget { padding: 52px; display: flex; flex-direction: column; gap: 18px; }
 .widget-top { display: flex; justify-content: space-between; align-items: baseline; }
 .widget-top span { font-size: 30px; font-weight: 600; color: var(--ink-soft); }
@@ -192,12 +192,12 @@ body {
 .frame:not(.ink) .pill { background: var(--ink); color: var(--on-ink); }
 .pill::after { content: "→"; }
 
-/* story (9:16): más aire arriba y abajo para la UI de Instagram */
+/* story (9:16): more room top and bottom for the app's UI */
 .fmt-story .frame { padding: 220px 88px 260px; }
 
-/* ---------- ajustes tras la primera revisión ---------- */
+/* ---------- layout refinements ---------- */
 
-/* Dato y planes llenan el espacio disponible en vez de dejar medio cuadro vacío. */
+/* Stat and plans fill the available space instead of leaving half the frame empty. */
 .l-stat .widget { flex: 1; min-height: 0; padding: 60px; }
 .l-stat .widget-top strong { font-size: 150px; }
 .l-stat .bars { flex: 1; height: auto; min-height: 0; }
@@ -213,13 +213,13 @@ body {
 .l-plans .plan .tag { margin-bottom: auto; }
 .l-plans .plan.featured h3 { margin-top: 0; }
 
-/* La foto del split se lleva un poco más de ancho. */
+/* The split photo takes a bit more width. */
 .l-split .row { grid-template-columns: 1.15fr 1fr; }
 
-/* Logo de la marca (si brand.logo existe) en lugar de la inicial */
+/* Brand logo (when brand.logo exists) instead of the initial */
 .mark.img { background: transparent; overflow: hidden; }
 .mark.img img { width: 100%; height: 100%; object-fit: contain; }
 
-/* Captura de pantalla de la app */
+/* App screenshot */
 .l-screen .shot { flex: 1; min-height: 0; margin-top: 48px; display: grid; place-items: center; }
 .l-screen .shot img { max-width: 100%; max-height: 100%; border-radius: 22px; border: 1px solid var(--line); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.45); }

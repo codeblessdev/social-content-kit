@@ -1,6 +1,6 @@
-// Dónde vive cada cosa.
-//   KIT        este repo (templates, CLI). Nunca se escribe acá.
-//   workspace  carpeta del usuario con sus marcas, proyectos y resultados.
+// Where things live.
+//   KIT        this repo (templates, CLI). Never written to.
+//   workspace  the user's folder with their brands, projects and outputs.
 //              --workspace <dir> > $SCK_WORKSPACE > ./social-content
 
 import { spawnSync } from 'node:child_process';
@@ -21,21 +21,21 @@ export const projectDir = (ws, id) => join(ws, 'projects', id);
 
 export function loadBrand(ws, id) {
   const file = join(brandDir(ws, id), 'brand.json');
-  if (!existsSync(file)) throw new Error(`No existe la marca "${id}" (${file}). Creala con: sck brand init <repo|carpeta> --id ${id}`);
+  if (!existsSync(file)) throw new Error(`Brand "${id}" not found (${file}). Create it with: sck brand init <repo|folder> --id ${id}`);
   return JSON.parse(readFileSync(file, 'utf8'));
 }
 
 export const slug = (s) =>
-  String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 const GIT_URL = /^(https?:\/\/|git@)[^\s]+$|^[\w.-]+\/[\w.-]+$/;
 
-// Acepta una carpeta local, una URL git (https/ssh) o "owner/repo" de GitHub.
-// Las URLs se clonan (shallow) en <workspace>/.sources/<nombre>; si ya existe, se actualiza.
+// Accepts a local folder, a git URL (https/ssh) or a GitHub "owner/repo".
+// URLs are shallow-cloned into <workspace>/.sources/<name>; an existing clone is updated.
 export function resolveSource(input, ws) {
   const local = resolve(input);
   if (existsSync(local)) return { dir: local, kind: 'local', ref: local };
-  if (!GIT_URL.test(input)) throw new Error(`"${input}" no es una carpeta existente ni una URL de git.`);
+  if (!GIT_URL.test(input)) throw new Error(`"${input}" is not an existing folder or a git URL.`);
 
   const url = /^[\w.-]+\/[\w.-]+$/.test(input) ? `https://github.com/${input}.git` : input;
   const name = basename(url).replace(/\.git$/, '');
@@ -46,7 +46,7 @@ export function resolveSource(input, ws) {
   const ok = existsSync(join(dir, '.git')) ? run(['pull', '--ff-only', '-q'], dir) : run(['clone', '--depth', '1', '-q', url, dir]);
   if (!ok) {
     throw new Error(
-      `No pude clonar ${url}. Si es privado, autenticá git (por ejemplo "gh auth login") o cloná vos el repo y pasá la carpeta.`,
+      `Could not clone ${url}. If it's private, authenticate git (e.g. "gh auth login") or clone it yourself and pass the folder.`,
     );
   }
   return { dir, kind: 'git', ref: url };

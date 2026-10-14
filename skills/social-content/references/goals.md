@@ -1,17 +1,17 @@
-# Según el objetivo
+# By goal
 
-**Marketing / venta**: problema → producto → prueba (dato, pantalla) → CTA concreto (prueba gratis, DM, link).
-Un solo mensaje por pieza.
+**Marketing / sales**: problem → product → proof (a number, a screen) → a concrete CTA (free trial, DM, link).
+One message per piece.
 
-**Generar vistas / alcance**: el hook manda. En el primer segundo, una pregunta incómoda, un contraste visual fuerte
-o algo que se reconozca ("¿seguís usando esto?"). Ritmo rápido: escenas de 2 a 4 s, subtítulos siempre. Final que invite a comentar o guardar.
+**Reach / views**: the hook is everything. In the first second: an uncomfortable question, a strong visual contrast
+or something recognizable ("still using this?"). Fast pace: 2 to 4 s scenes, captions always. An ending that invites comments or saves.
 
-**Meme**: formato reconocible (antes/después, "nadie:", expectativa vs. realidad). Poco texto. Que el chiste sea del rubro
-del cliente, no del software. La marca aparece al final y chiquita.
+**Meme**: a recognizable format (before/after, "nobody:", expectation vs. reality). Little text. The joke is about the customer's
+industry, not about the software. The brand shows up at the end, small.
 
-**Tutorial de un módulo**: título con el resultado ("Cómo exportar tus reportes en 30 s"), un paso por escena,
-pantalla real o reconstruida con el foco en lo que se toca (zoom, resaltado), locución en segunda persona. En carrusel:
-un paso por slide y la última con el resumen.
+**Module tutorial**: a title with the outcome ("How to export your reports in 30 s"), one step per scene,
+a real or rebuilt screen focused on what's being touched (zoom, highlight), second-person narration. As a carousel:
+one step per slide and a summary on the last one.
 
-**Ragebait**: provocá con la *situación* (el sistema viejo, la planilla, el cuaderno), nunca con una persona ni una
-marca competidora con nombre. Pasá rápido a la solución: el enojo dura 3 a 5 s y después viene el alivio.
+**Ragebait**: provoke with *the situation* (the old system, the spreadsheet, the notebook), never with a person or a
+named competitor. Move to the solution fast: the annoyance lasts 3 to 5 s and then comes the relief.

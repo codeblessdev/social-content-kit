@@ -1,4 +1,4 @@
-// Tamaños por plataforma. Un plan puede pisar cualquiera con "size": [ancho, alto].
+// Sizes per platform. Any piece can override them with "size": [width, height].
 export const FORMATS = {
   instagram: { post: [1080, 1350], square: [1080, 1080], carousel: [1080, 1350], story: [1080, 1920], reel: [1080, 1920] },
   youtube: { video: [1920, 1080], short: [1080, 1920], thumbnail: [1280, 720], community: [1080, 1080] },
@@ -8,7 +8,7 @@ export const FORMATS = {
   facebook: { post: [1080, 1350], story: [1080, 1920], reel: [1080, 1920] },
 };
 
-// Zona segura (px arriba, abajo) que tapa la interfaz de cada app en formatos verticales.
+// Safe area (px top, bottom) covered by each app's UI in vertical formats.
 export const SAFE = {
   instagram: { reel: [220, 420], story: [220, 300] },
   tiktok: { video: [180, 480] },

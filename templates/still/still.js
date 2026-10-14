@@ -1,11 +1,12 @@
-// Arma una slide a partir de window.__STILL__ = { brand, slide, index, total, size, fontsCss, assetBase }.
-// Lo inyecta src/still.mjs. Los textos usan *asteriscos* para el remate en itálica y \n para saltos.
+// Builds one slide from window.__STILL__ = { brand, slide, index, total, size, fontsCss, assetBase, lang, ui }.
+// Injected by src/still.mjs. Text uses *asterisks* for the italic punchline and \n for line breaks.
 
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const rich = (s = '') => esc(s).replace(/\*(.+?)\*/g, '<em>$1</em>').replace(/\n/g, '<br>');
 
 let asset = (p) => p;
+let ui = { swipe: 'Swipe', recommended: 'Recommended' };
 
 function head(s, size = 'lg') {
   return `
@@ -68,7 +69,7 @@ const LAYOUTS = {
     <div class="plans">${(s.plans || brand.facts?.plans || [])
       .map((p) => `
         <article class="card plan ${p.featured ? 'featured' : ''}">
-          ${p.featured ? '<span class="tag">Recomendado</span>' : ''}
+          ${p.featured ? `<span class="tag">${esc(ui.recommended)}</span>` : ''}
           <h3>${esc(p.name)}</h3>
           <span class="price">${esc(p.price)}</span>
           <span class="note">${esc(p.note)}</span>
@@ -89,16 +90,18 @@ function footer(brand, index, total, ink) {
   let right = brand.handle ? `<span>${esc(brand.handle)}</span>` : '';
   if (total > 1) {
     const dots = Array.from({ length: total }, (_, i) => `<i class="${i === index ? 'on' : ''}"></i>`).join('');
-    right = index === 0 && !ink ? `<span class="swipe">Deslizá</span>` : `<span class="pager">${dots}</span>`;
+    right = index === 0 && !ink ? `<span class="swipe">${esc(ui.swipe)}</span>` : `<span class="pager">${dots}</span>`;
   }
   return `<footer class="foot"><span class="brand">${mark}${esc(brand.name)}</span>${right}</footer>`;
 }
 
-async function render({ brand, slide, index = 0, total = 1, size = [1080, 1350], fontsCss, assetBase }) {
+async function render({ brand, slide, index = 0, total = 1, size = [1080, 1350], fontsCss, assetBase, lang = 'en', ui: strings }) {
+  if (strings) ui = strings;
+  document.documentElement.lang = lang;
   asset = (p) => (/^(https?:|data:|\/)/.test(p) ? p : `${assetBase}/${p}`);
   if (fontsCss) {
     const link = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: fontsCss });
-    await new Promise((ok, fail) => { link.onload = ok; link.onerror = () => fail(new Error(`No carga ${fontsCss}`)); document.head.append(link); });
+    await new Promise((ok, fail) => { link.onload = ok; link.onerror = () => fail(new Error(`Could not load ${fontsCss}`)); document.head.append(link); });
   }
   const [w, h] = size;
   const root = document.documentElement;
@@ -108,7 +111,7 @@ async function render({ brand, slide, index = 0, total = 1, size = [1080, 1350],
   document.body.className = h / w > 1.6 ? 'fmt-story' : '';
 
   const layout = LAYOUTS[slide.layout];
-  if (!layout) throw new Error(`Layout desconocido: ${slide.layout}. Disponibles: ${Object.keys(LAYOUTS).join(', ')}`);
+  if (!layout) throw new Error(`Unknown layout: ${slide.layout}. Available: ${Object.keys(LAYOUTS).join(', ')}`);
 
   const frame = document.getElementById('frame');
   const ink = slide.ink ?? (slide.layout === 'cta' || slide.layout === 'statement');
@@ -117,7 +120,7 @@ async function render({ brand, slide, index = 0, total = 1, size = [1080, 1350],
 
   await document.fonts.ready;
   await Promise.all([...document.images].map((img) => img.decode().catch(() => {
-    throw new Error(`No carga la imagen ${img.getAttribute('src')}`);
+    throw new Error(`Could not load image ${img.getAttribute('src')}`);
   })));
   window.__STILL_READY__ = true;
 }

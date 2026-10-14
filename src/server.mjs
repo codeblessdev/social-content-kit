@@ -1,5 +1,5 @@
-// Servidor estático mínimo para Chrome headless (los módulos ES no cargan desde file://).
-//   /kit/...  archivos de este repo     /ws/...  archivos del workspace
+// Minimal static server for headless Chrome (ES modules don't load from file://).
+//   /kit/...  files in this repo     /ws/...  files in the workspace
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, resolve } from 'node:path';

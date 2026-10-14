@@ -8,7 +8,7 @@ Works with **Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode** 
 
 ```
 You:    "Make an Instagram reel for the app in ~/projects/my-app"
-Agent:  asks: which app · content type · platform · goal
+Agent:  asks: which app · content type · platform · goal · language (voice-over, captions, on-screen text)
         → scans the app's code and shows you the brand it found (palette, fonts, voice) for confirmation
         → asks for screenshots (or rebuilds the screens from the app's HTML/CSS)
         → asks about voice-over and captions
@@ -35,6 +35,7 @@ You:    review, tweak, publish
 - [brand.json](#brandjson)
 - [plan.json](#planjson)
 - [Platforms and formats](#platforms-and-formats)
+- [Languages](#languages)
 - [Voice-over and captions](#voice-over-and-captions)
 - [Writing video scenes](#writing-video-scenes)
 - [What runs locally and what goes online](#what-runs-locally-and-what-goes-online)
@@ -52,6 +53,7 @@ You:    review, tweak, publish
 - **Images and carousels.** Ten layouts (cover, statement, photo, screenshot, split, stat with chart, step, list, pricing plans, CTA) rendered with headless Chrome at the right size for each platform.
 - **Videos.** Built with [HyperFrames](https://github.com/heygen-com/hyperframes) (HTML + CSS + GSAP → deterministic MP4). The kit adds scene timing, captions, per-platform safe areas and animation helpers; the agent writes each video's scenes.
 - **Free local voice-over.** [Kokoro-82M](https://github.com/thewh1teagle/kokoro-onnx) runs on your machine — 54 voices in English, Spanish, French, Italian, Portuguese, Hindi, Japanese and Chinese. No API keys.
+- **Multilingual.** Each project picks its content language: it drives the voice and its pronunciation, captions, on-screen text, template UI words, number formatting and `<html lang>`. Screens rebuilt from an app's HTML can keep the app's original language or be translated.
 - **Captions that stay in sync without transcription.** Each scene's narration is synthesized separately, so every line's duration is known exactly. Scenes are as long as their narration, and captions are timed inside each take.
 - **App screens: real or rebuilt.** Use your own screenshots, or let the agent rebuild a screen in HTML from the app's components (with demo data), so it can be animated: typing into a login form, a counter going up, rows sliding in.
 - **Plan first, render later.** The skill always asks four questions, writes a plan, and waits for your approval before producing anything.
@@ -135,10 +137,10 @@ Just ask:
 
 The skill then follows this flow:
 
-1. **Four questions, always, in one message:** which app (an existing brand, a repo link or a folder) · content type (image, carousel, short video, landscape video, other) · platform (Instagram, YouTube, TikTok, LinkedIn, other) · goal (marketing/sales, reach/views, meme, module tutorial, other).
+1. **Five questions, always, in one message:** which app (an existing brand, a repo link or a folder) · content type (image, carousel, short video, landscape video, other) · platform (Instagram, YouTube, TikTok, LinkedIn, other) · goal (marketing/sales, reach/views, meme, module tutorial, other) · **language** for the voice-over, captions and on-screen text.
 2. **Brand.** For a new app it runs `sck brand init`, completes `brand.json` from the landing page and the code, and shows you the palette, fonts, sample sentences in the brand's voice and product facts for confirmation.
-3. **Follow-ups, only if relevant:** screenshots of specific screens (or an offer to rebuild them from code), voice-over and voice choice, captions, length, CTA.
-4. **The plan.** Each piece with its format; for videos, a table of scenes with *time · what's on screen · on-screen text · narration*; caption and hashtags. **Nothing is produced until you approve.**
+3. **Follow-ups, only if relevant:** screenshots of specific screens (or an offer to rebuild them from code) and, for rebuilt screens, whether their text keeps the app's original language or is translated · voice-over and voice choice · captions · length · CTA.
+4. **The plan.** Each piece with its format and language; for videos, a table of scenes with *time · what's on screen · on-screen text · narration*; caption and hashtags. **Nothing is produced until you approve.**
 5. **Production.** Renders, checks, snapshots key frames, looks at them and fixes problems (cut-off text, captions covering content, empty scenes).
 6. **Delivery.** The path to the review page, a summary and any assumptions it made (demo numbers, rebuilt screens…).
 
@@ -156,7 +158,7 @@ sck brand init https://github.com/acme/booking-app --id booking
 #    → edit ~/social-content/brands/booking/brand.json (see below), set "status": "confirmed"
 
 # 2. Project + plan
-sck project new "launch reel" --brand booking --platform instagram --goal marketing
+sck project new "launch reel" --brand booking --platform instagram --language en --goal marketing
 #    → edit projects/<date>-launch-reel/plan.json (see below)
 
 # 3a. Images / carousels
@@ -177,12 +179,13 @@ All commands:
 ```
 sck doctor                                   what's installed and what's missing
 sck setup voice                              install Kokoro (local voice)
+sck languages                                content languages with a default voice
 sck brands                                   list brands in the workspace
 sck brand init <url|owner/repo|folder> [--id x] [--force]
 sck brand fonts <id>                         re-download the brand's Google Fonts
-sck project new <name> --brand <id> --platform <p> [--goal <g>]
+sck project new <name> --brand <id> --platform <p> --language <code> [--ui-language <code>] [--goal <g>]
 sck video new <project> <piece> [--force]    create the HyperFrames project for a video piece
-sck video sync <project> <piece>             re-copy brand assets into the video
+sck video sync <project> <piece>             re-copy brand assets (and <html lang>) into the video
 sck voice <project> <piece>                  generate voice-over, apply timing and captions
 sck timing <project> <piece>                 recompute timing and captions without re-generating voice
 sck check <project> <piece>                  validate the composition
@@ -271,6 +274,8 @@ Tip: take colors from the app's **public face** (landing, home, login), not its 
 {
   "brand": "booking",
   "platform": "instagram",
+  "language": "en",                 // voice-over, captions, on-screen text, UI words, <html lang>
+  "ui_language": "es",              // optional: text inside screens rebuilt from the app's HTML
   "goal": "marketing",
   "title": "Online bookings launch",
   "pieces": [
@@ -289,7 +294,7 @@ Tip: take colors from the app's **public face** (landing, home, login), not its 
     },
     {
       "id": "launch-reel", "type": "video", "format": "reel",
-      "voice": { "engine": "kokoro", "voice": "af_heart", "speed": 1.0 },
+      "voice": { "engine": "kokoro", "gender": "female", "speed": 1.0 },   // default voice for "language"; or { "voice": "bf_emma" }; null = no voice-over
       "captions": true,
       "scenes": [
         { "id": "hook", "visual": "Phone full of booking messages", "onscreen": "Still booking like this?", "voice": "Still taking bookings over chat?", "min": 3 },
@@ -340,12 +345,36 @@ Any slide accepts `"ink": true` for a dark background. `photo` paths resolve aga
 
 Any piece can override its size with `"size": [width, height]`.
 
+## Languages
+
+Every plan has a `language` (BCP 47: `en`, `en-GB`, `es`, `es-AR`, `pt-BR`, `fr`, `it`, `hi`, `ja`, `zh`…). It sets:
+
+- the **voice-over**: the default Kokoro voice for that language and its pronunciation (`gender`: `female` | `male`), unless the piece sets a voice;
+- the **captions** and every **on-screen text** the agent writes;
+- the template's **UI words** ("Swipe", "Recommended"), the **thousands separator** (`SCK.thousands`) and **`<html lang>`** in images and videos.
+
+`ui_language` is optional and only applies to **screens rebuilt from the app's HTML**: keep the app's original language (e.g. a Spanish dashboard in an English video) or translate menus, buttons and sample data. Real screenshots are never translated.
+
+| code | language | female | male |
+|---|---|---|---|
+| `en` | English (US) | `af_heart` | `am_michael` |
+| `en-GB` | English (UK) | `bf_emma` | `bm_george` |
+| `es` | Spanish | `ef_dora` | `em_alex` |
+| `fr` | French | `ff_siwis` | — |
+| `it` | Italian | `if_sara` | `im_nicola` |
+| `pt-BR` | Portuguese (Brazil) | `pf_dora` | `pm_alex` |
+| `hi` | Hindi | `hf_alpha` | `hm_omega` |
+| `ja` | Japanese | `jf_alpha` | `jm_kumo` |
+| `zh` | Chinese | `zf_xiaobei` | `zm_yunjian` |
+
+Other languages work too: set `"voice": { "voice": "<kokoro id>", "lang": "<phonemizer code>" }` in the piece (and UI words fall back to English). Regional codes map to their base language (`es-AR` → `es`, `pt` → `pt-BR`).
+
 ## Voice-over and captions
 
 - **Engine:** Kokoro-82M via `kokoro-onnx`, run through HyperFrames' `tts` command in a private Python venv (`sck setup voice`). Free and offline after the first model download.
-- **Voices:** set `"voice"` in the piece. Common ones: `af_heart`, `af_nova`, `af_sky`, `am_adam`, `am_michael` (US English) · `bf_emma`, `bf_isabella`, `bm_george` (UK English) · `ef_dora`, `em_alex`, `em_santa` (Spanish) · `ff_siwis` (French) · `jf_alpha` (Japanese) · `zf_xiaobei` (Chinese). Any of the [54 Kokoro voices](https://github.com/thewh1teagle/kokoro-onnx) works; list them with `npx hyperframes tts --list`. `"speed"` adjusts the pace; `"lang"` overrides the phonemizer.
+- **Voices:** chosen from the plan's language (see [Languages](#languages)), or set `"voice"` in the piece to any of the [54 Kokoro voices](https://github.com/thewh1teagle/kokoro-onnx) (`npx hyperframes tts --list`). `"speed"` adjusts the pace; `"lang"` overrides the phonemizer.
 - **Timing:** every scene's narration is synthesized as its own take and measured with `ffprobe`. Scenes start back to back; each lasts its narration + a short pause. `sck voice` writes `data-start` / `data-duration` into the HTML and one `<audio>` clip per scene.
-- **Captions:** each line is split into short phrases (≤ 3 words / 22 characters, breaking at punctuation) and spread over the take proportionally to word length. Written to `assets/voice/captions.js` and shown by `SCK.captions(tl)`. Restyle with `--caption-bg`, `--caption-fg`, `--caption-size`, `--captions-lift`.
+- **Captions:** each line is split into short phrases (≤ 3 words / 22 characters, breaking at punctuation; ~12 characters for languages written without spaces) and spread over the take proportionally to word length. Written to `assets/voice/captions.js` and shown by `SCK.captions(tl)`. Restyle with `--caption-bg`, `--caption-fg`, `--caption-size`, `--captions-lift`.
 - Voice takes are cached: only scenes whose text or voice changed are re-synthesized.
 
 ## Writing video scenes
@@ -372,7 +401,7 @@ Any piece can override its size with `"size": [width, height]`.
 </script>
 ```
 
-Helpers in `kit.js`: `SCK.title`, `SCK.words`, `SCK.at(id)`, `SCK.dur(id)`, `SCK.thousands(n)`, `SCK.fades(tl)`, `SCK.captions(tl)`, `SCK.esc`. Base classes in `kit.css`: `.scene`, `.scene.ink`, `.display`, `.kicker`, `.lead`, `.card`, `.pill`, `.brandline`, `.screen`. Brand assets are available under `assets/brand/` (`photos/`, `screens/`, `refs/`, `logos/`).
+Helpers in `kit.js`: `SCK.title`, `SCK.words`, `SCK.at(id)`, `SCK.dur(id)`, `SCK.thousands(n)` (separator of the video's language), `SCK.lang()`, `SCK.fades(tl)`, `SCK.captions(tl)`, `SCK.esc`. Scenes keep clear of the captions automatically (`--captions-space`, default 200 px; set it to 40px for videos without captions). Base classes in `kit.css`: `.scene`, `.scene.ink`, `.display`, `.kicker`, `.lead`, `.card`, `.pill`, `.brandline`, `.screen`. Brand assets are available under `assets/brand/` (`photos/`, `screens/`, `refs/`, `logos/`).
 
 Rules (HyperFrames renders frame by frame): position everything relative to `SCK.at(id)` so timings adapt when narration changes; no `Date.now()`, `Math.random()`, `fetch` or timers; animate counters with a tween on an object plus `onUpdate`. Preview with a timeline scrubber: `npx hyperframes preview <video-folder>`. More in [skills/social-content/references/video.md](skills/social-content/references/video.md).
 
@@ -395,17 +424,20 @@ No ElevenLabs, OpenAI, HeyGen platform or other paid API is used.
 | Problem | Fix |
 |---|---|
 | `sck: command not found` | Run `npm link` inside the repo, or use `node ~/social-content-kit/bin/sck.mjs` |
-| `No encuentro Chrome` (Chrome not found) | Install Chrome or set `CHROME_PATH=/path/to/chrome` |
-| `No pude crear el entorno de Python` | `sudo apt install python3-venv` (or `python3.12-venv`), then `sck setup voice` |
+| `Chrome not found` | Install Chrome or set `CHROME_PATH=/path/to/chrome` |
+| `Could not create the Python environment` | `sudo apt install python3-venv` (or `python3.12-venv`), then `sck setup voice` |
 | Voice fails with `kokoro-onnx is not installed` | `sck setup voice` |
 | Private repo can't be cloned | Authenticate git (e.g. `gh auth login`) or clone it yourself and pass the folder |
-| `⚠ … no entra en el cuadro` (doesn't fit) | Shorten that slide's text |
+| `⚠ … doesn't fit the frame` | Shorten that slide's text |
+| `missing "language"` | Add `"language": "en"` (or your content language) to `plan.json` |
+| `No default voice for language` | Set `"voice": { "voice": "<kokoro id>", "lang": "<code>" }` in the piece |
 | Video renders slowly | Install FFmpeg for local GPU rendering; Docker mode is slower and builds an image the first time |
 | `missing_timeline_registry` in `sck check` | Keep the `window.__timelines["main"] = tl` lines written literally at the end of the script |
 
 ## Limitations
 
-- The CLI messages and the skill's instructions are written in **Spanish** (the tool was built for a Spanish-speaking team). Agents follow them fine and write content in whatever language your brand uses; translations are welcome.
+- Template UI words ("Swipe", "Recommended") are translated for the languages in the table above; other languages fall back to English (PRs welcome in `src/i18n.mjs`).
+- Right-to-left languages aren't laid out specially yet.
 - Kokoro is the only TTS engine wired in so far. The `voice.engine` field is there to add others (ElevenLabs, OpenAI, HeyGen…).
 - Brand extraction is heuristic: always review `brand.json` before producing content (the skill makes the agent do this with you).
 - Background music isn't automated yet; HyperFrames supports audio tracks if you add one to a composition.
@@ -416,7 +448,7 @@ Issues and pull requests are welcome.
 
 ```bash
 npm install
-npm test        # unit tests (scanner, captions, formats)
+npm test        # unit tests (scanner, captions, languages, formats)
 ```
 
 Please don't commit generated content or any real app's data: brands, screenshots, plans, audio and videos belong in your workspace, and the `.gitignore` blocks them. Use fictional apps in examples and tests. Agents working on this repo follow [AGENTS.md](AGENTS.md).

@@ -1,13 +1,14 @@
-# Instrucciones para agentes
+# Instructions for agents
 
-Este repo es **social-content-kit**: un CLI (`sck`) y una skill para generar imágenes, carruseles y videos para redes
-con la línea visual de cualquier app.
+This repo is **social-content-kit**: a CLI (`sck`) and a skill to create images, carousels and videos for social media
+in any app's visual style.
 
-Cuando la persona pida contenido para redes (posts, reels, carruseles, videos, tutoriales, memes), seguí
-[skills/social-content/SKILL.md](skills/social-content/SKILL.md) paso a paso. Las preguntas iniciales y la confirmación del plan no son opcionales.
+When the person asks for social media content (posts, reels, carousels, videos, tutorials, memes), follow
+[skills/social-content/SKILL.md](skills/social-content/SKILL.md) step by step. The initial questions and the plan approval are not optional.
 
-Si estás modificando el kit en sí:
-- `bin/sck.mjs` es el CLI; la lógica está en `src/`. Templates en `templates/still/` (imágenes) y `templates/video/` (HyperFrames).
-- Nada en este repo puede depender de una app o una marca en particular: las marcas, proyectos y resultados viven en el workspace de cada persona.
-- **Nunca commitees contenido generado ni datos de una app** (brand.json, capturas, fotos, planes, voz, videos, nombres de clientes o tiendas). En ejemplos y tests usá apps ficticias.
-- Probá los cambios con `npm test` y con un render real (`sck render <proyecto> --draft`).
+When working on the kit itself:
+- `bin/sck.mjs` is the CLI; the logic lives in `src/`. Templates in `templates/still/` (images) and `templates/video/` (HyperFrames).
+- Nothing in this repo may depend on a specific app or brand: brands, projects and outputs live in each person's workspace.
+- **Never commit generated content or any app's data** (brand.json, screenshots, photos, plans, voice-over, videos, customer or store names). Use fictional apps in examples and tests.
+- Code, comments, CLI messages and docs are in English.
+- Test changes with `npm test` and with a real render (`sck render <project> --draft`).
