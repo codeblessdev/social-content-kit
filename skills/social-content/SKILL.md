@@ -51,6 +51,7 @@ The brand's copy (`voice`, `facts`) may be in a different language from the cont
   sample data) stays **in the app's original language** or is **translated to the content language**. Save it as `"ui_language"` in the plan.
   Real screenshots are never translated.
 - **Voice-over**: yes or no? Female or male voice (the default for the chosen language, see `sck languages`) or a specific Kokoro voice; speed.
+  If they want an **ElevenLabs** voice: generate the takes in their browser and download them through the API, see [references/elevenlabs.md](references/elevenlabs.md).
   Requires `sck setup voice` once.
 - **Captions**: on by default when there's voice-over (most people watch without sound). Same language as the voice-over.
 - **Length**, **CTA** and any material of their own (logo, photos, music).
@@ -72,7 +73,7 @@ The brand's copy (`voice`, `facts`) may be in a different language from the cont
 **Videos** (see [references/video.md](references/video.md)):
 1. `sck video new <project> <piece>` creates a HyperFrames project in `projects/<project>/<piece>/` (with `<html lang>` set from the plan).
 2. Write the scenes in its `index.html`: one `data-scene="<id>"` element per scene in the plan, using the `kit.js` helpers.
-3. `sck voice <project> <piece>` (or `sck timing …` without voice-over) sets each scene's length from its narration,
+3. `sck voice <project> <piece>` (or `sck timing …` without voice-over, or with ElevenLabs takes: [references/elevenlabs.md](references/elevenlabs.md)) sets each scene's length from its narration,
    generates the captions and writes the timing into the HTML. Run it again whenever the narration or the scenes change.
 4. `sck check <project> <piece>` and fix the errors.
 5. `sck snapshot <project> <piece>` and **look at the images**: cut-off text, captions covering something, empty scenes, contrast, wrong language.
